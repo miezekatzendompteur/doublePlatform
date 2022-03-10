@@ -1,0 +1,50 @@
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.exe.config
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.exe.manifest
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.application
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.exe
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.pdb
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.xml
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\bin\Release\LJDotNet.dll
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\obj\Release\DoublePlatform_1._0.Form1.resources
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\obj\Release\DoublePlatform_1._0.Form2.resources
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\obj\Release\DoublePlatform_1._0.Resources.resources
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.vbproj.GenerateResource.Cache
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.exe.manifest
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.application
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.exe
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.xml
+c:\VB2012_projects\DoublePlatform_1.2\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.pdb
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.exe.config
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.exe
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.xml
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.pdb
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.exe.manifest
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.application
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.exe
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.pdb
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.xml
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\bin\Release\LJDotNet.dll
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1._0.Form1.resources
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1._0.Form2.resources
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1._0.Resources.resources
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.vbproj.GenerateResource.Cache
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.exe.manifest
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.application
+C:\Users\LocalAdmin\Documents\Visual Studio 2013\Projects\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.vbprojResolveAssemblyReference.cache
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.exe.config
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.exe
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.xml
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.pdb
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.exe.manifest
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.application
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.exe
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.pdb
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\bin\Release\DoublePlatform_1.2.xml
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\bin\Release\LJDotNet.dll
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.vbprojResolveAssemblyReference.cache
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1._0.Form1.resources
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1._0.Form2.resources
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1._0.Resources.resources
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.vbproj.GenerateResource.Cache
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.exe.manifest
+C:\Users\LocalAdmin\Documents\DoublePlatform_1.2\obj\Release\DoublePlatform_1.2.application
