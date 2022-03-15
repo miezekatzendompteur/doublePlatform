@@ -1,11 +1,13 @@
 ﻿'Option Strict On
 Imports System, System.Drawing.Drawing2D, System.Drawing.Text, System.IO, System.Math, System.Runtime.InteropServices
 
+
+
 Public Class Form1
     Inherits System.Windows.Forms.Form
 
     Dim TimeTraces As Graphics = Form2.CreateGraphics()
-    Dim elapsed_ms, SamplingFrequency, VoltageSum, dt_ As Double
+    Dim elapsed_ms, SamplingFrequency, VoltageSum As Double
     Dim Lj_ID, LjDemo As Integer
     Dim HeatedSide(2, 9), ExpType(2, 9) As String
     Dim HeatBtnTxt, myBtnTxt, status, Heat_P1, Heat_P2, Heat_P3, ExpTyp_P1, ExpTyp_P2, ExpTyp_P3 As String
@@ -14,12 +16,13 @@ Public Class Form1
     Dim PI(2, 9) As Single
     Dim th1, tc1, th2, tc2, th3, tc3 As Single
     Dim BlockNo, nOfBlocks, nOfLoops, Block_No, TMYindex As Integer
-    Dim TotalTime, hysteresis, simul_loop, dt, RunningTime, SamplFreq As Single
+    Dim TotalTime, hysteresis, simul_loop, RunningTime, SamplFreq As Single
     Dim pos1, pos2, pos3, Y_pos1_old, Y_pos1, Y_pos2_old, Y_pos2, Y_pos3_old, Y_pos3 As Single
     Dim x, Xo, Yo As Integer
     Dim NofData, performed_NofData, endOfBlock, n As Long
     'definition of offset
     Dim db_offset_platform1, db_offset_platform2, db_offset_platform3 As Double
+    Public str_comment As String
     ' Dim startCount, stopCount, elapsedCount, TimerFrequency As Int64
     '************************ Laser *************************************************
     Dim Laser1_ON As Boolean = True
@@ -28,6 +31,8 @@ Public Class Form1
     Dim Laser2_OFF As Boolean = False
     Dim Laser1_OnOff, Laser2_OnOff, L1_old, L2_old As Boolean
     '************************ Laser *************************************************
+    'definition plattform LED color
+    Dim ledColorRed As Boolean = True
 
     'definition plattform LEDs
     Dim platform1_led1_onoff, platform1_led2_onoff, platform2_led1_onoff, platform2_led2_onoff, platform3_led1_onoff, platform3_led2_onoff As Boolean
@@ -37,10 +42,10 @@ Public Class Form1
 
     Const platform1_led1 = 0
     Const platform1_led2 = 1
-    Const platform2_led1 = 3
-    Const platform2_led2 = 4
-    Const platform3_led1 = 5
-    Const platform3_led2 = 6
+    Const platform2_led1 = 2
+    Const platform2_led2 = 3
+    Const platform3_led1 = 4
+    Const platform3_led2 = 5
 
     Dim tab_ As Char = Chr(9)
 
@@ -80,6 +85,7 @@ Public Class Form1
     '{----------------------------------------------------}
     Sub InitProgram()
 
+
         status = "stopped"
         platform1_led1_onoff = False
         platform1_led2_onoff = False
@@ -112,8 +118,7 @@ Public Class Form1
         Block_No = 0
         performed_NofData = 0
 
-        SamplFreq = 20         ' 20Hz
-        dt = 1 / SamplFreq     ' 50ms (see timer)
+        SamplFreq = 33.333         ' 100Hz
         NofData = TotalTime * SamplFreq     ' (= 21.600 for 9 x 120s)
         ReDim pos_data(NofData, 3)   ' allocate NofData x 4 elements
         endOfBlock = n_t(0)
@@ -121,8 +126,6 @@ Public Class Form1
         RunningTime = 0
 
         'TimerFrequency = HiResTimer.QueryPerformanceFrequency()
-        SamplFreq = 20         ' 20Hz
-        dt = 1 / SamplFreq     ' 50ms (see timer)
 
         Call DrawFrame()
 
@@ -131,15 +134,21 @@ Public Class Form1
     End Sub
 
     '{---------------START ("Run"-Button)-------------------------------------}
-    Private Sub Button41_Click(sender As Object, e As EventArgs) Handles Button41.Click
+    Private Sub runButton_Click(sender As Object, e As EventArgs) Handles runButton.Click
         status = "running"
+        ledRedOnOff.Enabled = False
+        runButton.BackgroundImage = My.Resources.runningButton
+        runButton.Text = "running"
         Me.StopWatch.Reset()
         Call messen()
     End Sub
 
     '{---------------STOP-Button------------------------------------}
-    Private Sub Button42_Click(sender As Object, e As EventArgs) Handles Button42.Click
+    Private Sub stopButton_Click(sender As Object, e As EventArgs) Handles stopButton.Click
         status = "stopped"
+        ledRedOnOff.Enabled = True
+        runButton.BackgroundImage = My.Resources.runButton
+        runButton.Text = "run"
 
         platform1_led1_onoff = False
         platform1_led2_onoff = False
@@ -159,8 +168,9 @@ Public Class Form1
     End Sub
 
     '{---------------Adjust Zero Positions-------------------------------------}
-    Private Sub Button48_Click(sender As Object, e As EventArgs) Handles Button48.Click
+    Private Sub adjustButton_Click(sender As Object, e As EventArgs) Handles adjustButton.Click
         status = "running"
+        ledRedOnOff.Enabled = False
 
         Call Adjust_ZeroPosition()
     End Sub
@@ -277,7 +287,7 @@ Public Class Form1
 
     End Sub
 
-  
+
     '{----------------------------------------------------}   
     Sub Adjust_ZeroPosition()
 
@@ -285,17 +295,18 @@ Public Class Form1
 
 
         status = "running"
-        timer2.Enabled = True
-        timer2.Interval = 50
+        'timer2.Enabled = True
+        Timer2.Interval = 30
 
         Do Until (status = "stopped")
-            Button42.Select()    ' STOP-Button
+            stopButton.Select()    ' STOP-Button
             Application.DoEvents()
-            timer2.Start()
+            Timer2.Start()
         Loop
 
-        timer2.Stop()
-        timer2.Enabled = False
+        Timer2.Stop()
+        ledRedOnOff.Enabled = True
+        'timer2.Enabled = False
     End Sub
 
     '{----------------------------------------------------}
@@ -311,6 +322,8 @@ Public Class Form1
     '{-------------------MESSEN!------------------------}   
     Sub messen()
 
+        Dim CurrentApp As Process
+
         Call InitProgram()
         th1 = 0
         tc1 = 0
@@ -321,14 +334,18 @@ Public Class Form1
         status = "running"
         n = 0
 
-        Timer1.Interval = 47
+        'set priority to HIGH
+        CurrentApp = Process.GetCurrentProcess
+        CurrentApp.PriorityClass = ProcessPriorityClass.High
+
+        Timer1.Interval = 30
         'Timer1.Enabled = True
         Timer1.Start()
         Me.StopWatch.Start()
 
         Do Until (status = "stopped")
 
-            Button42.Select()    '  STOP-Button
+            stopButton.Select()    '  STOP-Button
             Application.DoEvents()
 
             If n >= NofData Then
@@ -351,6 +368,7 @@ Public Class Form1
                 Call SwitchLed(platform3_led2_onoff, platform3_led2)
 
                 Call Next_Block()   ' this is only to write the last PI to the label on Form1
+                Form3.ShowDialog()
                 Call write_datafile()
             End If
 
@@ -360,9 +378,17 @@ Public Class Form1
 
         Loop
 
+        'set priority to Normal
+        CurrentApp.PriorityClass = ProcessPriorityClass.Normal
+
         Timer1.Stop()
         Me.StopWatch.Stop()
-        timer1.Enabled = False
+
+        ledRedOnOff.Enabled = True
+        runButton.BackgroundImage = My.Resources.runButton
+        runButton.Text = "run"
+
+        'Timer1.Enabled = False
 
     End Sub
 
@@ -390,24 +416,39 @@ Public Class Form1
 
     '{----------------------------------------------------}
     Sub Get_PositionValues()
-        Dim lngOverVoltage As Integer
+        Dim lngOverVoltage, int_cali, int_chan(4), int_gain(4), int_over As Integer
+        Dim db_voltage(4) As Single
         Dim db_ad_pos1, db_ad_pos2, db_ad_pos3 As Double
 
         lngOverVoltage = 0
+        int_cali = 1
         Lj_ID = -1
         LjDemo = 0 '############################################# DEMO #####################################################
 
-        lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 0, 0, lngOverVoltage, pos1) 'standard EAnalogIn function call
-        lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 2, 0, lngOverVoltage, pos2) 'standard EAnalogIn function call
-        lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 4, 0, lngOverVoltage, pos3) 'standard EAnalogIn function call
+        int_chan(0) = 0
+        int_chan(1) = 2
+        int_chan(2) = 4
+        int_chan(3) = 6
+
+        int_gain(0) = 0
+        int_gain(1) = 0
+        int_gain(2) = 0
+        int_gain(3) = 0
+
+
+        lj.LabJack.AISample(Lj_ID, LjDemo, 0, 0, 1, 4, int_chan, int_gain, int_cali, int_over, db_voltage)
+
+        'lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 0, 0, lngOverVoltage, pos1) 'standard EAnalogIn function call
+        'lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 2, 0, lngOverVoltage, pos2) 'standard EAnalogIn function call
+        'lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 4, 0, lngOverVoltage, pos3) 'standard EAnalogIn function call
 
         'adjust offset
         'db_ad_pos1 = Form2.TrackBar1.Value - 5
         'db_ad_pos2 = -Form2.TrackBar1.Value + 5
 
-        db_ad_pos1 = pos1
-        db_ad_pos2 = pos2
-        db_ad_pos3 = pos3
+        db_ad_pos1 = db_voltage(0)
+        db_ad_pos2 = db_voltage(1)
+        db_ad_pos3 = db_voltage(2)
 
         pos1 = db_ad_pos1 + db_offset_platform1
         pos2 = db_ad_pos2 + db_offset_platform2
@@ -494,78 +535,139 @@ Public Class Form1
         End If
 
         'Platform LED switching
+        '***************************** Add cases red/ yellow led ****************************************************
 
         Select Case Heat_P1
             Case "right"
-                If int_pos1 >= hysteresis Then
+                If int_pos1 >= hysteresis And ledColorRed = True Then
                     platform1_led1_onoff = True
                     platform1_led2_onoff = False
                 Else
                 End If
-                If int_pos1 <= -hysteresis Then
+                If int_pos1 <= -hysteresis And ledColorRed = True Then
+                    platform1_led1_onoff = False
+                    platform1_led2_onoff = False
+                Else
+                End If
+                If int_pos1 >= hysteresis And ledColorRed = False Then
                     platform1_led1_onoff = False
                     platform1_led2_onoff = True
+                Else
+                End If
+                If int_pos1 <= -hysteresis And ledColorRed = False Then
+                    platform1_led1_onoff = False
+                    platform1_led2_onoff = False
                 Else
                 End If
             Case "left"
-                If int_pos1 >= hysteresis Then
+                If int_pos1 >= hysteresis And ledColorRed = True Then
                     platform1_led1_onoff = False
-                    platform1_led2_onoff = True
+                    platform1_led2_onoff = False
                 Else
                 End If
-                If int_pos1 <= -hysteresis Then
+                If int_pos1 <= -hysteresis And ledColorRed = True Then
                     platform1_led1_onoff = True
                     platform1_led2_onoff = False
+                Else
+                End If
+                If int_pos1 >= hysteresis And ledColorRed = False Then
+                    platform1_led1_onoff = False
+                    platform1_led2_onoff = False
+                Else
+                End If
+                If int_pos1 <= -hysteresis And ledColorRed = False Then
+                    platform1_led1_onoff = False
+                    platform1_led2_onoff = True
                 Else
                 End If
         End Select
 
         Select Case Heat_P2
             Case "right"
-                If int_pos2 >= hysteresis Then
+                If int_pos2 >= hysteresis And ledColorRed = True Then
                     platform2_led1_onoff = True
                     platform2_led2_onoff = False
                 Else
                 End If
-                If int_pos2 <= -hysteresis Then
+                If int_pos2 <= -hysteresis And ledColorRed = True Then
+                    platform2_led1_onoff = False
+                    platform2_led2_onoff = False
+                Else
+                End If
+                If int_pos2 >= hysteresis And ledColorRed = False Then
                     platform2_led1_onoff = False
                     platform2_led2_onoff = True
+                Else
+                End If
+                If int_pos2 <= -hysteresis And ledColorRed = False Then
+                    platform2_led1_onoff = False
+                    platform2_led2_onoff = False
                 Else
                 End If
             Case "left"
-                If int_pos2 >= hysteresis Then
+                If int_pos2 >= hysteresis And ledColorRed = True Then
                     platform2_led1_onoff = False
-                    platform2_led2_onoff = True
+                    platform2_led2_onoff = False
                 Else
                 End If
-                If int_pos2 <= -hysteresis Then
+                If int_pos2 <= -hysteresis And ledColorRed = True Then
                     platform2_led1_onoff = True
                     platform2_led2_onoff = False
+                Else
+                End If
+                If int_pos2 >= hysteresis And ledColorRed = False Then
+                    platform2_led1_onoff = False
+                    platform2_led2_onoff = False
+                Else
+                End If
+                If int_pos2 <= -hysteresis And ledColorRed = False Then
+                    platform2_led1_onoff = False
+                    platform2_led2_onoff = True
                 Else
                 End If
         End Select
 
         Select Case Heat_P3
             Case "right"
-                If int_pos3 >= hysteresis Then
+                If int_pos3 >= hysteresis And ledColorRed = True Then
                     platform3_led1_onoff = True
                     platform3_led2_onoff = False
                 Else
                 End If
-                If int_pos3 <= -hysteresis Then
+                If int_pos3 <= -hysteresis And ledColorRed = True Then
+                    platform3_led1_onoff = False
+                    platform3_led2_onoff = False
+                Else
+                End If
+                If int_pos3 >= hysteresis And ledColorRed = False Then
                     platform3_led1_onoff = False
                     platform3_led2_onoff = True
+                Else
+                End If
+                If int_pos3 <= -hysteresis And ledColorRed = False Then
+                    platform3_led1_onoff = False
+                    platform3_led2_onoff = False
                 Else
                 End If
             Case "left"
-                If int_pos3 >= hysteresis Then
+                If int_pos3 >= hysteresis And ledColorRed = True Then
                     platform3_led1_onoff = False
-                    platform3_led2_onoff = True
+                    platform3_led2_onoff = False
                 Else
                 End If
-                If int_pos3 <= -hysteresis Then
+                If int_pos3 <= -hysteresis And ledColorRed = True Then
                     platform3_led1_onoff = True
                     platform3_led2_onoff = False
+                Else
+                End If
+                If int_pos3 >= hysteresis And ledColorRed = False Then
+                    platform3_led1_onoff = False
+                    platform3_led2_onoff = False
+                Else
+                End If
+                If int_pos3 <= -hysteresis And ledColorRed = False Then
+                    platform3_led1_onoff = False
+                    platform3_led2_onoff = True
                 Else
                 End If
         End Select
@@ -971,12 +1073,21 @@ Public Class Form1
         Call SwitchHeatMngmnt()
         Button25.Text = HeatBtnTxt
     End Sub
+
+    Private Sub Button73_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
     '{----------------------------------------------------}
     Private Sub Button26_Click(sender As Object, e As EventArgs) Handles Button26.Click
         HeatBtnTxt = Button26.Text
         myBtnTxt = Button36.Text
         Call SwitchHeatMngmnt()
         Button26.Text = HeatBtnTxt
+    End Sub
+
+    Private Sub Button42_Click(sender As Object, e As EventArgs)
+
     End Sub
     '{----------------------------------------------------}
     Private Sub Button27_Click(sender As Object, e As EventArgs) Handles Button27.Click
@@ -1387,6 +1498,18 @@ Public Class Form1
         Button68.Text = HeatBtnTxt
     End Sub
     '{----------------------------------------------------}
+    Private Sub ledRedOnOff_Click(sender As Object, e As EventArgs) Handles ledRedOnOff.Click
+        If ledRedOnOff.Tag = "red" Then
+            ledRedOnOff.BackgroundImage = My.Resources.leddiode_gelb
+            ledRedOnOff.Tag = "yellow"
+            ledColorRed = False
+        Else
+            ledRedOnOff.BackgroundImage = My.Resources.leddiode_rot
+            ledRedOnOff.Tag = "red"
+            ledColorRed = True
+        End If
+    End Sub
+    '{----------------------------------------------------}
     Sub Switch_TeMY(ByVal str_button1 As String, ByVal str_button2 As String)
         Dim TeMY_index As Integer
 
@@ -1445,7 +1568,7 @@ Public Class Form1
                 Call SwitchLaser1(Laser1_OFF)
         End Select
         Do While status = "stopped"
-            '   Button42.Select()    ' STOP-Button
+            '   stopButton.Select()    ' STOP-Button
             Application.DoEvents()
             Call Get_HeaterValues()
         Loop
@@ -1467,7 +1590,7 @@ Public Class Form1
         End Select
 
         Do While status = "stopped"
-            '     Button42.Select()    ' STOP-Button
+            '     stopButton.Select()    ' STOP-Button
             Application.DoEvents()
             Call Get_HeaterValues()
         Loop
@@ -1638,7 +1761,7 @@ Public Class Form1
     End Sub
 
     Sub Write_FileHeader()
-        ReDim file_header(35, 1)
+        ReDim file_header(36, 1)
 
         file_header(0, 0) = "Learned-Helplesness-Experiment "
         file_header(0, 1) = "(TriplePlatform)  from  " & My.Computer.Clock.LocalTime
@@ -1756,12 +1879,14 @@ Public Class Form1
         file_header(31, 1) = Str(hysteresis)
         file_header(32, 0) = ""
         file_header(32, 1) = ""
-        file_header(33, 0) = "------------------------------------"
-        file_header(33, 1) = "------------------------------------"
-        file_header(34, 0) = ""
-        file_header(34, 1) = ""
-        file_header(35, 0) = "n" & tab_ & "t[s]" & tab_ & "pos1" & tab_ & "pos2" & tab_ & "pos3"
+        file_header(33, 0) = "Comment: "
+        file_header(33, 1) = str_comment
+        file_header(34, 0) = "------------------------------------"
+        file_header(34, 1) = "------------------------------------"
+        file_header(35, 0) = ""
         file_header(35, 1) = ""
+        file_header(36, 0) = "n" & tab_ & "t[s]" & tab_ & "pos1" & tab_ & "pos2" & tab_ & "pos3"
+        file_header(36, 1) = ""
 
         For LineNo As Integer = 0 To 35
             DataFile.WriteLine(file_header(LineNo, 0) & tab_ & file_header(LineNo, 1))
@@ -1770,12 +1895,22 @@ Public Class Form1
 
     '{---------------------------------------------------------}
     Sub write_torque_pos_data()
-        For n As Integer = 0 To performed_NofData
-            DataFile.WriteLine(Str(n) & tab_ & _
-                Str(pos_data(n, 0)) & tab_ & _
-                Str(pos_data(n, 1)) & tab_ & _
-                Str(pos_data(n, 2)) & tab_ & _
-                Str(pos_data(n, 3)))
+        Dim int_counter As Integer
+        Dim int_counter_end As Integer
+
+        'no overflow of array
+        If NofData > performed_NofData Then
+            int_counter_end = performed_NofData
+        Else
+            int_counter_end = NofData
+        End If
+
+        For int_counter = 0 To int_counter_end 'changed form performed_NofData to NofData
+            DataFile.WriteLine(Str(int_counter) & tab_ & _
+                Str(pos_data(int_counter, 0)) & tab_ & _
+                Str(pos_data(int_counter, 1)) & tab_ & _
+                Str(pos_data(int_counter, 2)) & tab_ & _
+                Str(pos_data(int_counter, 3)))
         Next
     End Sub
 End Class

@@ -135,6 +135,12 @@
       <DependentUpon>Form2.vb</DependentUpon>
     </Compile>
     <Compile Include="Form2.vb" />
+    <Compile Include="Form3.Designer.vb">
+      <DependentUpon>Form3.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form3.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -158,11 +164,14 @@
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form3.resx">
+      <DependentUpon>Form3.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +194,11 @@
     <Content Include="Resources\greenLED.gif" />
     <Content Include="Resources\LaserTest_on.gif" />
     <Content Include="Resources\LaserTest_on_S.gif" />
+    <Content Include="Resources\runButton.png" />
+    <Content Include="Resources\runningButton.png" />
+    <None Include="Resources\runButton.BackgroundImage.png" />
+    <None Include="Resources\leddiode_gelb.png" />
+    <Content Include="Resources\leddiode_rot.png" />
     <Content Include="Resources\redLED.gif" />
     <None Include="Resources\LaserTest_off.gif" />
     <None Include="Resources\LaserTest_on_S1.gif" />

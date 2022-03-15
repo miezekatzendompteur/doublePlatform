@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Form1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
@@ -132,23 +132,11 @@ Partial Class Form1
         Me.Label39 = New System.Windows.Forms.Label()
         Me.Label33 = New System.Windows.Forms.Label()
         Me.Label32 = New System.Windows.Forms.Label()
-        Me.Button70 = New System.Windows.Forms.Button()
-        Me.Button71 = New System.Windows.Forms.Button()
-        Me.Button72 = New System.Windows.Forms.Button()
-        Me.Button69 = New System.Windows.Forms.Button()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.Label35 = New System.Windows.Forms.Label()
         Me.Label34 = New System.Windows.Forms.Label()
-        Me.Button48 = New System.Windows.Forms.Button()
-        Me.Button47 = New System.Windows.Forms.Button()
-        Me.Button46 = New System.Windows.Forms.Button()
-        Me.Button45 = New System.Windows.Forms.Button()
-        Me.Button44 = New System.Windows.Forms.Button()
-        Me.Button43 = New System.Windows.Forms.Button()
         Me.Label31 = New System.Windows.Forms.Label()
         Me.NumericUpDown11 = New System.Windows.Forms.NumericUpDown()
-        Me.Button42 = New System.Windows.Forms.Button()
-        Me.Button41 = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
@@ -188,6 +176,19 @@ Partial Class Form1
         Me.Button66 = New System.Windows.Forms.Button()
         Me.Button64 = New System.Windows.Forms.Button()
         Me.Button65 = New System.Windows.Forms.Button()
+        Me.ledRedOnOff = New System.Windows.Forms.Button()
+        Me.Button70 = New System.Windows.Forms.Button()
+        Me.Button71 = New System.Windows.Forms.Button()
+        Me.Button72 = New System.Windows.Forms.Button()
+        Me.Button69 = New System.Windows.Forms.Button()
+        Me.adjustButton = New System.Windows.Forms.Button()
+        Me.Button47 = New System.Windows.Forms.Button()
+        Me.Button46 = New System.Windows.Forms.Button()
+        Me.Button45 = New System.Windows.Forms.Button()
+        Me.Button44 = New System.Windows.Forms.Button()
+        Me.Button43 = New System.Windows.Forms.Button()
+        Me.stopButton = New System.Windows.Forms.Button()
+        Me.runButton = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -1250,6 +1251,7 @@ Partial Class Form1
         'GroupBox10
         '
         Me.GroupBox10.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.GroupBox10.Controls.Add(Me.ledRedOnOff)
         Me.GroupBox10.Controls.Add(Me.Label61)
         Me.GroupBox10.Controls.Add(Me.Label60)
         Me.GroupBox10.Controls.Add(Me.Label59)
@@ -1275,7 +1277,7 @@ Partial Class Form1
         Me.GroupBox10.Controls.Add(Me.Label36)
         Me.GroupBox10.Controls.Add(Me.Label35)
         Me.GroupBox10.Controls.Add(Me.Label34)
-        Me.GroupBox10.Controls.Add(Me.Button48)
+        Me.GroupBox10.Controls.Add(Me.adjustButton)
         Me.GroupBox10.Controls.Add(Me.Button47)
         Me.GroupBox10.Controls.Add(Me.Button46)
         Me.GroupBox10.Controls.Add(Me.Button45)
@@ -1283,8 +1285,8 @@ Partial Class Form1
         Me.GroupBox10.Controls.Add(Me.Button43)
         Me.GroupBox10.Controls.Add(Me.Label31)
         Me.GroupBox10.Controls.Add(Me.NumericUpDown11)
-        Me.GroupBox10.Controls.Add(Me.Button42)
-        Me.GroupBox10.Controls.Add(Me.Button41)
+        Me.GroupBox10.Controls.Add(Me.stopButton)
+        Me.GroupBox10.Controls.Add(Me.runButton)
         Me.GroupBox10.Location = New System.Drawing.Point(684, 22)
         Me.GroupBox10.Name = "GroupBox10"
         Me.GroupBox10.Size = New System.Drawing.Size(275, 718)
@@ -1435,6 +1437,7 @@ Partial Class Form1
         '
         Me.NumericUpDown12.DecimalPlaces = 2
         Me.NumericUpDown12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NumericUpDown12.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.NumericUpDown12.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
         Me.NumericUpDown12.Location = New System.Drawing.Point(27, 262)
         Me.NumericUpDown12.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
@@ -1471,54 +1474,6 @@ Partial Class Form1
         Me.Label32.TabIndex = 25
         Me.Label32.Text = "Plattform1"
         '
-        'Button70
-        '
-        Me.Button70.AutoSize = True
-        Me.Button70.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
-        Me.Button70.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button70.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button70.Location = New System.Drawing.Point(187, 510)
-        Me.Button70.Name = "Button70"
-        Me.Button70.Size = New System.Drawing.Size(54, 49)
-        Me.Button70.TabIndex = 24
-        Me.Button70.UseVisualStyleBackColor = True
-        '
-        'Button71
-        '
-        Me.Button71.AutoSize = True
-        Me.Button71.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
-        Me.Button71.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button71.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button71.Location = New System.Drawing.Point(111, 510)
-        Me.Button71.Name = "Button71"
-        Me.Button71.Size = New System.Drawing.Size(54, 49)
-        Me.Button71.TabIndex = 23
-        Me.Button71.UseVisualStyleBackColor = True
-        '
-        'Button72
-        '
-        Me.Button72.AutoSize = True
-        Me.Button72.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
-        Me.Button72.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button72.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button72.Location = New System.Drawing.Point(27, 510)
-        Me.Button72.Name = "Button72"
-        Me.Button72.Size = New System.Drawing.Size(54, 49)
-        Me.Button72.TabIndex = 22
-        Me.Button72.UseVisualStyleBackColor = True
-        '
-        'Button69
-        '
-        Me.Button69.AutoSize = True
-        Me.Button69.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
-        Me.Button69.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button69.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button69.Location = New System.Drawing.Point(187, 377)
-        Me.Button69.Name = "Button69"
-        Me.Button69.Size = New System.Drawing.Size(54, 49)
-        Me.Button69.TabIndex = 21
-        Me.Button69.UseVisualStyleBackColor = True
-        '
         'Label36
         '
         Me.Label36.AutoSize = True
@@ -1551,81 +1506,6 @@ Partial Class Form1
         Me.Label34.Text = "adjust"
         Me.Label34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Button48
-        '
-        Me.Button48.AutoSize = True
-        Me.Button48.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.AdjustZero
-        Me.Button48.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button48.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Button48.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button48.Location = New System.Drawing.Point(27, 97)
-        Me.Button48.Name = "Button48"
-        Me.Button48.Size = New System.Drawing.Size(54, 49)
-        Me.Button48.TabIndex = 12
-        Me.Button48.UseVisualStyleBackColor = True
-        '
-        'Button47
-        '
-        Me.Button47.AutoSize = True
-        Me.Button47.BackgroundImage = CType(resources.GetObject("Button47.BackgroundImage"), System.Drawing.Image)
-        Me.Button47.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button47.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button47.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.Button47.Location = New System.Drawing.Point(187, 650)
-        Me.Button47.Name = "Button47"
-        Me.Button47.Size = New System.Drawing.Size(54, 49)
-        Me.Button47.TabIndex = 11
-        Me.Button47.Text = "EXIT"
-        Me.Button47.UseVisualStyleBackColor = True
-        '
-        'Button46
-        '
-        Me.Button46.AutoSize = True
-        Me.Button46.BackgroundImage = CType(resources.GetObject("Button46.BackgroundImage"), System.Drawing.Image)
-        Me.Button46.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button46.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button46.Location = New System.Drawing.Point(27, 650)
-        Me.Button46.Name = "Button46"
-        Me.Button46.Size = New System.Drawing.Size(54, 49)
-        Me.Button46.TabIndex = 10
-        Me.Button46.UseVisualStyleBackColor = True
-        '
-        'Button45
-        '
-        Me.Button45.AutoSize = True
-        Me.Button45.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
-        Me.Button45.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button45.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button45.Location = New System.Drawing.Point(111, 377)
-        Me.Button45.Name = "Button45"
-        Me.Button45.Size = New System.Drawing.Size(54, 49)
-        Me.Button45.TabIndex = 7
-        Me.Button45.UseVisualStyleBackColor = True
-        '
-        'Button44
-        '
-        Me.Button44.AutoSize = True
-        Me.Button44.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
-        Me.Button44.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button44.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button44.Location = New System.Drawing.Point(27, 377)
-        Me.Button44.Name = "Button44"
-        Me.Button44.Size = New System.Drawing.Size(54, 49)
-        Me.Button44.TabIndex = 6
-        Me.Button44.UseVisualStyleBackColor = True
-        '
-        'Button43
-        '
-        Me.Button43.AutoSize = True
-        Me.Button43.BackgroundImage = CType(resources.GetObject("Button43.BackgroundImage"), System.Drawing.Image)
-        Me.Button43.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button43.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button43.Location = New System.Drawing.Point(107, 23)
-        Me.Button43.Name = "Button43"
-        Me.Button43.Size = New System.Drawing.Size(54, 49)
-        Me.Button43.TabIndex = 5
-        Me.Button43.UseVisualStyleBackColor = True
-        '
         'Label31
         '
         Me.Label31.AutoSize = True
@@ -1646,32 +1526,6 @@ Partial Class Form1
         Me.NumericUpDown11.Size = New System.Drawing.Size(55, 20)
         Me.NumericUpDown11.TabIndex = 2
         Me.NumericUpDown11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.NumericUpDown11.Value = New Decimal(New Integer() {5, 0, 0, 65536})
-        '
-        'Button42
-        '
-        Me.Button42.AutoSize = True
-        Me.Button42.BackgroundImage = CType(resources.GetObject("Button42.BackgroundImage"), System.Drawing.Image)
-        Me.Button42.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button42.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button42.Location = New System.Drawing.Point(187, 23)
-        Me.Button42.Name = "Button42"
-        Me.Button42.Size = New System.Drawing.Size(54, 49)
-        Me.Button42.TabIndex = 1
-        Me.Button42.UseVisualStyleBackColor = True
-        '
-        'Button41
-        '
-        Me.Button41.AutoSize = True
-        Me.Button41.BackgroundImage = CType(resources.GetObject("Button41.BackgroundImage"), System.Drawing.Image)
-        Me.Button41.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button41.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button41.Location = New System.Drawing.Point(27, 23)
-        Me.Button41.Name = "Button41"
-        Me.Button41.Size = New System.Drawing.Size(54, 49)
-        Me.Button41.TabIndex = 0
-        Me.Button41.Text = "RUN"
-        Me.Button41.UseVisualStyleBackColor = True
         '
         'Timer1
         '
@@ -2096,6 +1950,169 @@ Partial Class Form1
         Me.Button65.Text = "->M"
         Me.Button65.UseVisualStyleBackColor = True
         '
+        'ledRedOnOff
+        '
+        Me.ledRedOnOff.AutoSize = True
+        Me.ledRedOnOff.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.leddiode_rot
+        Me.ledRedOnOff.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ledRedOnOff.Cursor = System.Windows.Forms.Cursors.Default
+        Me.ledRedOnOff.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ledRedOnOff.Location = New System.Drawing.Point(187, 97)
+        Me.ledRedOnOff.Name = "ledRedOnOff"
+        Me.ledRedOnOff.Size = New System.Drawing.Size(54, 49)
+        Me.ledRedOnOff.TabIndex = 43
+        Me.ledRedOnOff.Tag = "red"
+        Me.ledRedOnOff.UseVisualStyleBackColor = True
+        '
+        'Button70
+        '
+        Me.Button70.AutoSize = True
+        Me.Button70.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
+        Me.Button70.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button70.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button70.Location = New System.Drawing.Point(187, 510)
+        Me.Button70.Name = "Button70"
+        Me.Button70.Size = New System.Drawing.Size(54, 49)
+        Me.Button70.TabIndex = 24
+        Me.Button70.UseVisualStyleBackColor = True
+        '
+        'Button71
+        '
+        Me.Button71.AutoSize = True
+        Me.Button71.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
+        Me.Button71.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button71.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button71.Location = New System.Drawing.Point(111, 510)
+        Me.Button71.Name = "Button71"
+        Me.Button71.Size = New System.Drawing.Size(54, 49)
+        Me.Button71.TabIndex = 23
+        Me.Button71.UseVisualStyleBackColor = True
+        '
+        'Button72
+        '
+        Me.Button72.AutoSize = True
+        Me.Button72.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
+        Me.Button72.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button72.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button72.Location = New System.Drawing.Point(27, 510)
+        Me.Button72.Name = "Button72"
+        Me.Button72.Size = New System.Drawing.Size(54, 49)
+        Me.Button72.TabIndex = 22
+        Me.Button72.UseVisualStyleBackColor = True
+        '
+        'Button69
+        '
+        Me.Button69.AutoSize = True
+        Me.Button69.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
+        Me.Button69.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button69.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button69.Location = New System.Drawing.Point(187, 377)
+        Me.Button69.Name = "Button69"
+        Me.Button69.Size = New System.Drawing.Size(54, 49)
+        Me.Button69.TabIndex = 21
+        Me.Button69.UseVisualStyleBackColor = True
+        '
+        'adjustButton
+        '
+        Me.adjustButton.AutoSize = True
+        Me.adjustButton.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.AdjustZero
+        Me.adjustButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.adjustButton.Cursor = System.Windows.Forms.Cursors.Default
+        Me.adjustButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.adjustButton.Location = New System.Drawing.Point(27, 97)
+        Me.adjustButton.Name = "adjustButton"
+        Me.adjustButton.Size = New System.Drawing.Size(54, 49)
+        Me.adjustButton.TabIndex = 12
+        Me.adjustButton.UseVisualStyleBackColor = True
+        '
+        'Button47
+        '
+        Me.Button47.AutoSize = True
+        Me.Button47.BackgroundImage = CType(resources.GetObject("Button47.BackgroundImage"), System.Drawing.Image)
+        Me.Button47.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button47.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button47.ForeColor = System.Drawing.SystemColors.ControlLightLight
+        Me.Button47.Location = New System.Drawing.Point(187, 650)
+        Me.Button47.Name = "Button47"
+        Me.Button47.Size = New System.Drawing.Size(54, 49)
+        Me.Button47.TabIndex = 11
+        Me.Button47.Text = "EXIT"
+        Me.Button47.UseVisualStyleBackColor = True
+        '
+        'Button46
+        '
+        Me.Button46.AutoSize = True
+        Me.Button46.BackgroundImage = CType(resources.GetObject("Button46.BackgroundImage"), System.Drawing.Image)
+        Me.Button46.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button46.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button46.Location = New System.Drawing.Point(27, 650)
+        Me.Button46.Name = "Button46"
+        Me.Button46.Size = New System.Drawing.Size(54, 49)
+        Me.Button46.TabIndex = 10
+        Me.Button46.UseVisualStyleBackColor = True
+        '
+        'Button45
+        '
+        Me.Button45.AutoSize = True
+        Me.Button45.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
+        Me.Button45.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button45.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button45.Location = New System.Drawing.Point(111, 377)
+        Me.Button45.Name = "Button45"
+        Me.Button45.Size = New System.Drawing.Size(54, 49)
+        Me.Button45.TabIndex = 7
+        Me.Button45.UseVisualStyleBackColor = True
+        '
+        'Button44
+        '
+        Me.Button44.AutoSize = True
+        Me.Button44.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.redLED
+        Me.Button44.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button44.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button44.Location = New System.Drawing.Point(27, 377)
+        Me.Button44.Name = "Button44"
+        Me.Button44.Size = New System.Drawing.Size(54, 49)
+        Me.Button44.TabIndex = 6
+        Me.Button44.UseVisualStyleBackColor = True
+        '
+        'Button43
+        '
+        Me.Button43.AutoSize = True
+        Me.Button43.BackgroundImage = CType(resources.GetObject("Button43.BackgroundImage"), System.Drawing.Image)
+        Me.Button43.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button43.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button43.Location = New System.Drawing.Point(107, 23)
+        Me.Button43.Name = "Button43"
+        Me.Button43.Size = New System.Drawing.Size(54, 49)
+        Me.Button43.TabIndex = 5
+        Me.Button43.UseVisualStyleBackColor = True
+        '
+        'stopButton
+        '
+        Me.stopButton.AutoSize = True
+        Me.stopButton.BackgroundImage = CType(resources.GetObject("stopButton.BackgroundImage"), System.Drawing.Image)
+        Me.stopButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.stopButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.stopButton.Location = New System.Drawing.Point(187, 23)
+        Me.stopButton.Name = "stopButton"
+        Me.stopButton.Size = New System.Drawing.Size(54, 49)
+        Me.stopButton.TabIndex = 1
+        Me.stopButton.UseVisualStyleBackColor = True
+        '
+        'runButton
+        '
+        Me.runButton.AutoSize = True
+        Me.runButton.BackgroundImage = Global.DoublePlatform_1._0.My.Resources.Resources.runButton
+        Me.runButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.runButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.runButton.Location = New System.Drawing.Point(27, 23)
+        Me.runButton.Name = "runButton"
+        Me.runButton.Size = New System.Drawing.Size(54, 49)
+        Me.runButton.TabIndex = 0
+        Me.runButton.Tag = "run"
+        Me.runButton.Text = "run"
+        Me.runButton.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2119,7 +2136,7 @@ Partial Class Form1
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.GroupBox1)
         Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Text = "Triple Plattform/ Version 1.1"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
@@ -2253,10 +2270,10 @@ Partial Class Form1
     Friend WithEvents Button43 As System.Windows.Forms.Button
     Friend WithEvents Label31 As System.Windows.Forms.Label
     Friend WithEvents NumericUpDown11 As System.Windows.Forms.NumericUpDown
-    Friend WithEvents Button42 As System.Windows.Forms.Button
-    Friend WithEvents Button41 As System.Windows.Forms.Button
+    Friend WithEvents stopButton As System.Windows.Forms.Button
+    Friend WithEvents runButton As System.Windows.Forms.Button
     Friend WithEvents Label34 As System.Windows.Forms.Label
-    Friend WithEvents Button48 As System.Windows.Forms.Button
+    Friend WithEvents adjustButton As System.Windows.Forms.Button
     Friend WithEvents Label36 As System.Windows.Forms.Label
     Friend WithEvents Label35 As System.Windows.Forms.Label
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
@@ -2320,5 +2337,5 @@ Partial Class Form1
     Friend WithEvents Label57 As System.Windows.Forms.Label
     Friend WithEvents Label61 As System.Windows.Forms.Label
     Friend WithEvents Label60 As System.Windows.Forms.Label
-
+    Friend WithEvents ledRedOnOff As Button
 End Class
