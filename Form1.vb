@@ -1,5 +1,5 @@
 ﻿'Option Strict On
-Imports System, System.Drawing.Drawing2D, System.Drawing.Text, System.IO, System.Math, System.Runtime.InteropServices
+Imports System, System.Drawing.Drawing2D, System.Drawing.Text, System.IO, System.Math, System.Runtime.InteropServices, System.Management, System.Globalization
 
 
 
@@ -67,24 +67,97 @@ Public Class Form1
 
     Dim StopWatch As New Diagnostics.Stopwatch
 
-
-
+    Dim serialNumbers(127) As Integer
+    Dim productIDList(127) As Integer
+    Dim localIDList(127) As Integer
+    Dim powerList(127) As Integer
+    Dim calMatrix(20, 127) As Integer
+    Dim numberFound As Integer
+    Dim reserved1 As Integer
+    Dim reserved2 As Integer
 
     '{----------------------------------------------------}
+    'Protected Overrides Sub WndProc(ByRef m As Message)
+    '    MyBase.WndProc(m)
+    '    If (m.Msg = &H219) And (m.WParam = &H7) Then
+    '        Call findDevice()
+    '    End If
+    'End Sub
+
+    Private Sub findDevice()
+
+        Dim query As New SelectQuery("Win32_PnPEntity")
+        Dim queryCollection As ManagementObjectCollection
+        Dim searcher As New ManagementObjectSearcher()
+
+        query.Condition = "DeviceID LIKE '%VID_0CD5%'"
+        searcher.Query = query
+        queryCollection = searcher.Get()
+
+        Try
+            If (queryCollection.Count > 0) Then
+                Console.WriteLine("Device found")
+
+            Else
+                Console.WriteLine("No Device")
+                Throw New System.Exception("No Labjack found")
+            End If
+        Catch ex As Exception
+            Dim Result As Integer
+
+            Result = MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error)
+            If Result = System.Windows.Forms.DialogResult.Cancel Then
+                'runButton.Visible = False
+                'adjustButton.Visible = False
+                Me.Close()
+            Else
+                findDevice()
+            End If
+        End Try
+
+    End Sub
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim Result As DialogResult
+
         Location = New Point(25, 400)
         Form2.StartPosition = FormStartPosition.Manual
         Form2.Location = New Point(25, 65)
         Form2.Show()
 
         Call InitProgram()
+        Call findDevice()
+
     End Sub
 
+    Sub usbDevicesPresent()
+        Dim errorCode As Integer
+        Dim Result As DialogResult
 
+        Try
+            errorCode = lj.LabJack.ListAll(productIDList, serialNumbers, localIDList, powerList, calMatrix, numberFound, reserved1, reserved2)
+
+            If (numberFound = 0) Then
+                Throw New System.Exception("No Labjack found")
+            Else
+            End If
+
+        Catch ex As Exception
+            Result = MessageBox.Show(ex.Message, "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error)
+            If Result = System.Windows.Forms.DialogResult.Cancel Then
+
+                'runButton.Visible = False
+                'adjustButton.Visible = False
+                Me.Close()
+            Else
+                usbDevicesPresent()
+            End If
+
+        End Try
+
+    End Sub
     '{----------------------------------------------------}
     Sub InitProgram()
-
 
         status = "stopped"
         platform1_led1_onoff = False
@@ -128,9 +201,6 @@ Public Class Form1
         'TimerFrequency = HiResTimer.QueryPerformanceFrequency()
 
         Call DrawFrame()
-
-
-
     End Sub
 
     '{---------------START ("Run"-Button)-------------------------------------}
@@ -318,6 +388,22 @@ Public Class Form1
 
     End Sub
 
+    Private Sub emergyCloseTimer()
+
+        Try
+            runButton.Visible = False
+            adjustButton.Visible = False
+
+            Timer1.Stop()
+            Timer2.Stop()
+            Me.StopWatch.Stop()
+            status = "stopped"
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
 
     '{-------------------MESSEN!------------------------}   
     Sub messen()
@@ -419,6 +505,7 @@ Public Class Form1
         Dim lngOverVoltage, int_cali, int_chan(4), int_gain(4), int_over As Integer
         Dim db_voltage(4) As Single
         Dim db_ad_pos1, db_ad_pos2, db_ad_pos3 As Double
+        Dim errorCode As Integer
 
         lngOverVoltage = 0
         int_cali = 1
@@ -435,8 +522,21 @@ Public Class Form1
         int_gain(2) = 0
         int_gain(3) = 0
 
+        Try
+            errorCode = lj.LabJack.AISample(Lj_ID, LjDemo, 0, 0, 1, 4, int_chan, int_gain, int_cali, int_over, db_voltage)
 
-        lj.LabJack.AISample(Lj_ID, LjDemo, 0, 0, 1, 4, int_chan, int_gain, int_cali, int_over, db_voltage)
+            If (errorCode > 0) Then
+                Throw New System.Exception("Labjack Errorcode: " & errorCode)
+            Else
+            End If
+
+        Catch ex As Exception
+            emergyCloseTimer()
+
+            MessageBox.Show(ex.Message, "Labjack Errorcode: " & errorCode, MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+        End Try
+
 
         'lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 0, 0, lngOverVoltage, pos1) 'standard EAnalogIn function call
         'lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 2, 0, lngOverVoltage, pos2) 'standard EAnalogIn function call
@@ -471,11 +571,32 @@ Public Class Form1
     Sub Get_HeaterValues()
         Dim HeatVoltage As Integer
         Dim U1, U2, mA1, mA2 As Single
+        Dim errorCode As Integer
         Lj_ID = -1
         LjDemo = 0
 
-        lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 2, 0, HeatVoltage, U1) 'standard EAnalogIn function call
-        lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 3, 0, HeatVoltage, U2) 'standard EAnalogIn function call
+        Try
+            errorCode = lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 2, 0, HeatVoltage, U1) 'standard EAnalogIn function call
+
+            If (errorCode > 0) Then
+                Throw New System.Exception("Labjack Errorcode: " & errorCode)
+            Else
+            End If
+
+            errorCode = lj.LabJack.EAnalogIn(Lj_ID, LjDemo, 3, 0, HeatVoltage, U2) 'standard EAnalogIn function call
+
+            If (errorCode > 0) Then
+                Throw New System.Exception("Labjack Errorcode: " & errorCode)
+            Else
+            End If
+
+        Catch ex As Exception
+            emergyCloseTimer()
+
+            MessageBox.Show(ex.Message, "Labjack Errorcode: " & errorCode, MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+        End Try
+
 
         mA1 = U1 / 19.5 * 1000  ' I1 = U1/R1 [in mA];   R1 = 19.5 Ohm
         mA2 = U2 / 19.5 * 1000  ' I2 = U2/R2 [in mA];   R2 = 19.5 Ohm
@@ -1597,146 +1718,171 @@ Public Class Form1
 
 
     End Sub
-
+    Private Sub infoButton_Click(sender As Object, e As EventArgs) Handles infoButton.Click
+        MsgBox("Contact: johann.schmid@ur.de", vbInformation, "Info")
+    End Sub
 
     '{------------------------Switch Laser 1----------------------------}
     Sub SwitchLaser1(OnOff As Boolean)
         Dim IOchannel As Integer = 0
         Dim useIO_ports As Integer
-        Dim ErrorCode As Integer = 99
+        Dim errorCode As Integer
         Dim errorString(50) As Char
 
         Lj_ID = -1  '  serial number, or -1 for first found.
         LjDemo = 0  '  0 for normal operation, >0 for demo mode (=without LabJack)
         useIO_ports = 0  ' IF 0, THEN DIO0 ..DIO3; if <> 0, then D0 ..D20
 
-        Select Case OnOff
-            Case Laser1_ON
-                Button44.Image = My.Resources.LaserTest_on_S1
-                ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, IOchannel, useIO_ports, 1)
+        Try
+            Select Case OnOff
+                Case Laser1_ON
+                    Button44.Image = My.Resources.LaserTest_on_S1
+                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, IOchannel, useIO_ports, 1)
                 'lj.LabJack.EDigitalOut(-1, 0, 0, 5, 1)
-            Case Laser1_OFF
-                If status = "running" Then
-                    Button44.Image = My.Resources.LaserTest_off
-                Else   ' (status = "stopped"
-                    Button44.Image = My.Resources.Laser_Warnschild_S
-                End If
-                ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, IOchannel, useIO_ports, 0)
-                'lj.LabJack.EDigitalOut(-1, 0, 0, 0, 0)
-        End Select
+                Case Laser1_OFF
+                    If status = "running" Then
+                        Button44.Image = My.Resources.LaserTest_off
+                    Else   ' (status = "stopped"
+                        Button44.Image = My.Resources.Laser_Warnschild_S
+                    End If
+                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, IOchannel, useIO_ports, 0)
+                    'lj.LabJack.EDigitalOut(-1, 0, 0, 0, 0)
+            End Select
 
-        ErrorCode = 0
-        If ErrorCode <> 0 Then
-            lj.LabJack.GetErrorString(ErrorCode, errorString)
-            MsgBox(errorString)
-        End If
+            If (errorCode > 0) Then
+                Throw New System.Exception("Labjack Errorcode: " & errorCode)
+            Else
+            End If
+
+        Catch ex As Exception
+            emergyCloseTimer()
+
+            MessageBox.Show(ex.Message, "Labjack Errorcode: " & ErrorCode, MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+        End Try
+
 
     End Sub
     '{------------------------Switch Laser 2----------------------------}
     Sub SwitchLaser2(OnOff As Boolean)
         Dim IOchannel As Integer = 1
         Dim useIO_ports As Integer
-        Dim ErrorCode As Integer = 99
+        Dim errorCode As Integer = 99
         Dim errorString(50) As Char
 
         Lj_ID = -1
         LjDemo = 0
         useIO_ports = 0  ' IF 0, THEN DIO0 ..DIO3; if <> 0, then D0 ..D20
 
-        Select Case OnOff
-            Case Laser2_ON
-                Button45.Image = My.Resources.LaserTest_on_S1
-                ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, IOchannel, useIO_ports, 1)
-            Case Laser1_OFF
-                If status = "running" Then
-                    Button45.Image = My.Resources.LaserTest_off
-                Else   ' (status = "stopped"
-                    Button45.Image = My.Resources.Laser_Warnschild_S
-                End If
-                ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, IOchannel, useIO_ports, 0)
+        Try
+            Select Case OnOff
+                Case Laser2_ON
+                    Button45.Image = My.Resources.LaserTest_on_S1
+                    errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, IOchannel, useIO_ports, 1)
+                Case Laser1_OFF
+                    If status = "running" Then
+                        Button45.Image = My.Resources.LaserTest_off
+                    Else   ' (status = "stopped"
+                        Button45.Image = My.Resources.Laser_Warnschild_S
+                    End If
+                    errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, IOchannel, useIO_ports, 0)
 
-        End Select
+            End Select
 
-        If ErrorCode <> 0 Then
-            lj.LabJack.GetErrorString(ErrorCode, errorString)
-            MsgBox(errorString)
-        End If
+            If (ErrorCode > 0) Then
+                Throw New System.Exception("Labjack Errorcode: " & errorCode)
+            Else
+            End If
+
+        Catch ex As Exception
+            emergyCloseTimer()
+            MessageBox.Show(ex.Message, "Labjack Errorcode: " & errorCode, MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+        End Try
 
     End Sub
     '{------------------------Switch LED ----------------------------}
     Sub SwitchLed(ByVal OnOff As Boolean, ByVal io_led As Integer)
         Dim IOchannel As Integer = 1
         Dim useIO_ports As Integer
-        Dim ErrorCode As Integer = 0 '########################################################################## Wert = 99
+        Dim errorCode As Integer
         Dim errorString(50) As Char
 
         Lj_ID = -1
         LjDemo = 0 'Demomode value > 0
         useIO_ports = 1  ' IF 0, THEN DIO0 ..DIO3; if <> 0, then D0 ..D20
 
-        Select Case io_led
-            Case platform1_led1
-                If (OnOff = True) Then
-                    Button44.Image = My.Resources.greenLED
-                    'ErrorCode = lj.LabJack.PulseOutStart(Lj_ID, LjDemo, 0, 1, 32767, 6, 1, 6, 1)
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform1_led1, useIO_ports, 1)
-                Else
 
-                    Button44.Image = My.Resources.redLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform1_led1, useIO_ports, 0)
-                End If
-            Case platform1_led2
-                If (OnOff = True) Then
-                    Button72.Image = My.Resources.greenLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform1_led2, useIO_ports, 1)
-                Else
+        Try
+            Select Case io_led
+                Case platform1_led1
+                    If (OnOff = True) Then
+                        Button44.Image = My.Resources.greenLED
+                        'errorCode = lj.LabJack.PulseOutStart(Lj_ID, LjDemo, 0, 1, 32767, 6, 1, 6, 1)
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform1_led1, useIO_ports, 1)
+                    Else
 
-                    Button72.Image = My.Resources.redLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform1_led2, useIO_ports, 0)
-                End If
-            Case platform2_led1
-                If (OnOff = True) Then
-                    Button45.Image = My.Resources.greenLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform2_led1, useIO_ports, 1)
-                Else
+                        Button44.Image = My.Resources.redLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform1_led1, useIO_ports, 0)
+                    End If
+                Case platform1_led2
+                    If (OnOff = True) Then
+                        Button72.Image = My.Resources.greenLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform1_led2, useIO_ports, 1)
+                    Else
 
-                    Button45.Image = My.Resources.redLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform2_led1, useIO_ports, 0)
-                End If
-            Case platform2_led2
-                If (OnOff = True) Then
-                    Button71.Image = My.Resources.greenLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform2_led2, useIO_ports, 1)
-                Else
+                        Button72.Image = My.Resources.redLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform1_led2, useIO_ports, 0)
+                    End If
+                Case platform2_led1
+                    If (OnOff = True) Then
+                        Button45.Image = My.Resources.greenLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform2_led1, useIO_ports, 1)
+                    Else
 
-                    Button71.Image = My.Resources.redLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform2_led2, useIO_ports, 0)
-                End If
-            Case platform3_led1
-                If (OnOff = True) Then
-                    Button69.Image = My.Resources.greenLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform3_led1, useIO_ports, 1)
-                Else
+                        Button45.Image = My.Resources.redLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform2_led1, useIO_ports, 0)
+                    End If
+                Case platform2_led2
+                    If (OnOff = True) Then
+                        Button71.Image = My.Resources.greenLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform2_led2, useIO_ports, 1)
+                    Else
 
-                    Button69.Image = My.Resources.redLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform3_led1, useIO_ports, 0)
-                End If
-            Case platform3_led2
-                If (OnOff = True) Then
-                    Button70.Image = My.Resources.greenLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform3_led2, useIO_ports, 1)
-                Else
+                        Button71.Image = My.Resources.redLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform2_led2, useIO_ports, 0)
+                    End If
+                Case platform3_led1
+                    If (OnOff = True) Then
+                        Button69.Image = My.Resources.greenLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform3_led1, useIO_ports, 1)
+                    Else
 
-                    Button70.Image = My.Resources.redLED
-                    ErrorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform3_led2, useIO_ports, 0)
-                End If
+                        Button69.Image = My.Resources.redLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform3_led1, useIO_ports, 0)
+                    End If
+                Case platform3_led2
+                    If (OnOff = True) Then
+                        Button70.Image = My.Resources.greenLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform3_led2, useIO_ports, 1)
+                    Else
 
-        End Select
+                        Button70.Image = My.Resources.redLED
+                        errorCode = lj.LabJack.EDigitalOut(Lj_ID, LjDemo, platform3_led2, useIO_ports, 0)
+                    End If
 
-        If ErrorCode <> 0 Then
-            lj.LabJack.GetErrorString(ErrorCode, errorString)
-            MsgBox(errorString)
-        End If
+            End Select
+
+            If (errorCode > 0) Then
+                Throw New System.Exception("Labjack Errorcode: " & errorCode)
+            Else
+            End If
+
+        Catch ex As Exception
+            emergyCloseTimer()
+            MessageBox.Show(ex.Message, "Labjack Errorcode: " & errorCode, MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+        End Try
 
     End Sub
 
@@ -1744,19 +1890,27 @@ Public Class Form1
     Sub write_datafile()
         Dim saveFileDialog1 As New SaveFileDialog()
         With saveFileDialog1
-            Do
-                .Filter = "LightGuide FlightSimulator DataFile (*.dat)|*.dat|all files (*.*)|*.*"
-                .FilterIndex = 1
-                .InitialDirectory = "c:\data"
-                .Title = "save data"
-            Loop Until .ShowDialog() = DialogResult.OK
-            filename = .FileName
+            .FileName = Date.UtcNow.ToString("yyyy_MM_dd_H-mm-ss")
+            .Filter = "LightGuide FlightSimulator DataFile (*.dat)|*.dat|all files (*.*)|*.*"
+            .FilterIndex = 1
+            .InitialDirectory = Environment.SpecialFolder.MyDocuments
+            .RestoreDirectory = True
+            .Title = "save data"
         End With
-        DataFile = New StreamWriter(filename)
-        Call Write_FileHeader()
-        Call write_torque_pos_data()
-        DataFile.Close()
-        DataFile = Nothing
+
+        If saveFileDialog1.ShowDialog() = DialogResult.OK Then
+            Try
+                DataFile = New StreamWriter(saveFileDialog1.FileName)
+                Call Write_FileHeader()
+                Call write_torque_pos_data()
+                DataFile.Close()
+                DataFile = Nothing
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, "Fileerror", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        Else
+
+        End If
 
     End Sub
 
